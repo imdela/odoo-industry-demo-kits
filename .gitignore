@@ -1,0 +1,31 @@
+# --- Odoo Industry Demo Kits .gitignore ---
+
+# Docker Data (Crucial to ignore for local persistence)
+odoo-db-data/
+odoo-web-data/
+data/
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+.python-version
+
+# Odoo logs
+*.log
+loader_log.txt
+
+# Secrets & Config
+config/odoo.conf
+!config/odoo.conf.example
+
+# IDEs
+.idea/
+.vscode/
+.DS_Store
+
+# Temporary seeds in container
+/tmp/seeds/

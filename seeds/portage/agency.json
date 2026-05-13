@@ -1,0 +1,14 @@
+{
+    "name": "Portage Bridge Services",
+    "street": "45 Avenue des Entrepreneurs",
+    "city": "Lyon",
+    "zip": "69000",
+    "country_code": "FR",
+    "phone": "+33 4 72 00 00 00",
+    "email": "contact@portage-bridge.example.com",
+    "website": "https://www.portage-bridge.example.com",
+    "vat": "FR89123456789",
+    "company_registry": "123 456 789 R.C.S. Lyon",
+    "siret": "12345678900012",
+    "logo_url": "https://logo.clearbit.com/odoo.com"
+}

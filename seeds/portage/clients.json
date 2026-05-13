@@ -1,0 +1,137 @@
+[
+    {
+        "name": "Lesage",
+        "street": "39, rue de David",
+        "city": "Teixeira",
+        "zip": "70219",
+        "email": "contact@barre.com",
+        "phone": "+33 (0)5 34 87 20 54",
+        "vat": "FR68994839423"
+    },
+    {
+        "name": "Techer",
+        "street": "60, chemin de Bonnin",
+        "city": "Lemonnier",
+        "zip": "30139",
+        "email": "contact@foucher.org",
+        "phone": "0360376060",
+        "vat": "FR62216703224"
+    },
+    {
+        "name": "Delaunay",
+        "street": "68, avenue Claire Masse",
+        "city": "Ruiz",
+        "zip": "71463",
+        "email": "contact@merle.fr",
+        "phone": "+33 (0)4 88 38 68 64",
+        "vat": "FR99866749466"
+    },
+    {
+        "name": "L\u00e9ger",
+        "street": "758, avenue Roger Gauthier",
+        "city": "Guillot",
+        "zip": "97318",
+        "email": "contact@dijoux.com",
+        "phone": "03 21 30 68 20",
+        "vat": "FR96641094126"
+    },
+    {
+        "name": "Hoarau SA",
+        "street": "41, avenue Diane Bernier",
+        "city": "Jourdan",
+        "zip": "86916",
+        "email": "contact@courtois.org",
+        "phone": "0434866167",
+        "vat": "FR34117036969"
+    },
+    {
+        "name": "Roy SA",
+        "street": "84, rue de Thibault",
+        "city": "Gonzalez-les-Bains",
+        "zip": "05783",
+        "email": "contact@meunier.org",
+        "phone": "0731273826",
+        "vat": "FR42757635311"
+    },
+    {
+        "name": "Garcia",
+        "street": "95, rue de Laroche",
+        "city": "Huet",
+        "zip": "41896",
+        "email": "contact@lombard.com",
+        "phone": "0375638310",
+        "vat": "FR71372524250"
+    },
+    {
+        "name": "Bazin et Fils",
+        "street": "233, boulevard Delorme",
+        "city": "Barre",
+        "zip": "24567",
+        "email": "contact@voisin.org",
+        "phone": "05 55 51 14 45",
+        "vat": "FR20930646024"
+    },
+    {
+        "name": "Vall\u00e9e",
+        "street": "74, boulevard Pruvost",
+        "city": "Benarddan",
+        "zip": "67313",
+        "email": "contact@robert.com",
+        "phone": "+33 2 36 09 82 49",
+        "vat": "FR67758175659"
+    },
+    {
+        "name": "Barbier SARL",
+        "street": "17, rue de Verdier",
+        "city": "Saint Suzanne",
+        "zip": "33546",
+        "email": "contact@martinez.fr",
+        "phone": "+33 (0)4 44 94 62 08",
+        "vat": "FR23824035055"
+    },
+    {
+        "name": "Duhamel SARL",
+        "street": "773, rue Collin",
+        "city": "Fernandez-sur-Mer",
+        "zip": "85677",
+        "email": "contact@morel.com",
+        "phone": "0279113068",
+        "vat": "FR74349589467"
+    },
+    {
+        "name": "Mercier",
+        "street": "25, rue de Barbe",
+        "city": "Gomes",
+        "zip": "32415",
+        "email": "contact@letellier.net",
+        "phone": "0487548792",
+        "vat": "FR88624506574"
+    },
+    {
+        "name": "Masson S.A.R.L.",
+        "street": "35, chemin de Maillot",
+        "city": "Perez",
+        "zip": "62943",
+        "email": "contact@martin.com",
+        "phone": "+33 (0)3 29 49 33 83",
+        "vat": "FR76447439545"
+    },
+    {
+        "name": "Leclercq",
+        "street": "avenue Benoit",
+        "city": "Lacroix-sur-Joseph",
+        "zip": "46792",
+        "email": "contact@peltier.org",
+        "phone": "+33 1 76 05 49 63",
+        "vat": "FR77789916825"
+    },
+    {
+        "name": "Brunel Berger SARL",
+        "street": "boulevard de Lesage",
+        "city": "Boulay",
+        "zip": "80839",
+        "email": "contact@lambert.fr",
+        "phone": "02 78 89 92 95",
+        "vat": "FR50126500193"
+    }
+]
