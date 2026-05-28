@@ -1,6 +1,6 @@
 # Odoo Industry Demo Kits
 
-A scalable, dockerized environment for deploying Odoo 17.0 demo instances pre-populated with industry-specific data. Designed for rapid sales demonstrations, training, and testing across different business sectors.
+A scalable, dockerized environment for deploying Odoo 19.0 demo instances pre-populated with industry-specific data. Designed for rapid sales demonstrations, training, and testing across different business sectors.
 
 ## 🚀 Quick Start
 
