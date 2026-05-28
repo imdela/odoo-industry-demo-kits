@@ -1,0 +1,14 @@
+{
+    "name": "Aion Platform",
+    "street": "12 Rue de la Bourse",
+    "city": "Paris",
+    "zip": "75002",
+    "country_code": "FR",
+    "phone": "+33 1 42 00 00 00",
+    "email": "contact@aion-platform.example.com",
+    "website": "https://www.aion-platform.example.com",
+    "vat": "FR98123456789",
+    "company_registry": "987 654 321 R.C.S. Paris",
+    "siret": "98765432100012",
+    "logo_url": "https://logo.clearbit.com/odoo.com"
+}
