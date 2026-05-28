@@ -25,6 +25,65 @@ def get_uid():
     proxy = xmlrpc.client.ServerProxy(f'{URL}/xmlrpc/2/common', allow_none=True)
     return proxy.authenticate(DB, USER, PASS, {})
 
+def search_or_create(models, uid, password, model, domain, create_vals):
+    ids = models.execute_kw(DB, uid, password, model, 'search', [domain], {'limit': 1})
+    if ids:
+        return ids[0]
+    return models.execute_kw(DB, uid, password, model, 'create', [create_vals])
+
+
+def setup_accounting(models, uid, password):
+    print('Bootstrapping accounting configuration...')
+
+    account_map = {
+        'income_account': {'code': '700000', 'name': 'Sales Revenue', 'account_type': 'income', 'reconcile': False},
+        'receivable_account': {'code': '411000', 'name': 'Trade Receivables', 'account_type': 'asset_receivable', 'reconcile': True},
+        'expense_account': {'code': '600000', 'name': 'Expenses', 'account_type': 'expense', 'reconcile': False},
+        'payable_account': {'code': '401000', 'name': 'Trade Payables', 'account_type': 'liability_payable', 'reconcile': True},
+    }
+    accounts = {}
+    for key, data in account_map.items():
+        domain = [('code', '=', data['code'])]
+        accounts[key] = search_or_create(
+            models, uid, password,
+            'account.account',
+            domain,
+            data
+        )
+
+    journal_map = {
+        'sale_journal': {'type': 'sale', 'code': 'INV', 'name': 'Customer Invoices', 'default_account_id': accounts['income_account']},
+        'purchase_journal': {'type': 'purchase', 'code': 'PUR', 'name': 'Supplier Invoices'},
+        'bank_journal': {'type': 'bank', 'code': 'BNK', 'name': 'Bank'},
+        'cash_journal': {'type': 'cash', 'code': 'CAS', 'name': 'Cash'},
+    }
+    journals = {}
+    for key, data in journal_map.items():
+        domain = [('code', '=', data['code'])]
+        journals[key] = search_or_create(
+            models, uid, password,
+            'account.journal',
+            domain,
+            data
+        )
+
+    models.execute_kw(DB, uid, password, 'res.company', 'write', [[1], {
+        'income_account_id': accounts['income_account'],
+        'expense_account_id': accounts['expense_account'],
+    }])
+
+    return {
+        'income_account_id': accounts['income_account'],
+        'receivable_account_id': accounts['receivable_account'],
+        'expense_account_id': accounts['expense_account'],
+        'payable_account_id': accounts['payable_account'],
+        'sale_journal_id': journals['sale_journal'],
+        'purchase_journal_id': journals['purchase_journal'],
+        'bank_journal_id': journals['bank_journal'],
+        'cash_journal_id': journals['cash_journal'],
+    }
+
+
 def fetch_asset_as_base64(url):
     try:
         req = requests.get(url, timeout=10)
@@ -137,6 +196,8 @@ def run_industry_loader(path, clean=False):
             'logo': logo_data
         }])
 
+    accounting_defaults = setup_accounting(models, uid, PASS)
+
     # 2. Partners
     clients_path = os.path.join(path, 'clients.json')
     client_ids = []
@@ -177,11 +238,23 @@ def run_industry_loader(path, clean=False):
     # 4. Transactions
     if client_ids:
         print("Generating transaction history...")
-        product_ids = models.execute_kw(DB, uid, PASS, 'product.product', 'search', [[['type', '=', 'service']]], {'limit': 1})
-        if not product_ids:
-            return
-        pid = product_ids[0]
-        models.execute_kw(DB, uid, PASS, 'product.product', 'write', [[pid], {'invoice_policy': 'order'}])
+        income_account = accounting_defaults['income_account_id']
+
+        product_ids = models.execute_kw(DB, uid, PASS, 'product.product', 'search', [[('name', '=', 'Consulting Service'), ('type', '=', 'service')]], {'limit': 1})
+        if product_ids:
+            pid = product_ids[0]
+            models.execute_kw(DB, uid, PASS, 'product.product', 'write', [[pid], {
+                'invoice_policy': 'order',
+                'property_account_income_id': income_account
+            }])
+        else:
+            pid = models.execute_kw(DB, uid, PASS, 'product.product', 'create', [{
+                'name': 'Consulting Service',
+                'type': 'service',
+                'list_price': 500,
+                'property_account_income_id': income_account,
+                'invoice_policy': 'order',
+            }])
 
         for i in range(20):
             cid = client_ids[i % len(client_ids)]
@@ -232,7 +305,8 @@ def run_industry_loader(path, clean=False):
                             'quantity': random.randint(1, 10),
                             'price_unit': random.choice([400, 550, 700]),
                             'name': 'Consulting Services',
-                            'sale_line_ids': [[6, 0, so_lines]]
+                            'sale_line_ids': [[6, 0, so_lines]],
+                            'account_id': income_account,
                         })
                     ]
                 }])
