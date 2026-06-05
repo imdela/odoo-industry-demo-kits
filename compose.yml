@@ -1,4 +1,3 @@
-version: '3.1'
 services:
   web:
     image: odoo:19.0
@@ -22,7 +21,7 @@ services:
       - POSTGRES_PASSWORD=odoo
       - POSTGRES_USER=odoo
     volumes:
-      - odoo-db-data:/var/lib/postgresql/data
+      - odoo-db-data:/var/lib/postgresql
 
 volumes:
   odoo-web-data:

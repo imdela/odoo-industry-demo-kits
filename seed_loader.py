@@ -176,8 +176,8 @@ def _generate_invoices(models, uid, password, client_ids, accounting_defaults):
         }])
 
     print("Generating transaction history...")
-    for i in range(20):
-        cid = client_ids[i % len(client_ids)]
+    invoice_pairs = [(cid, j) for cid in client_ids for j in range(random.randint(5, 10))]
+    for cid, _ in invoice_pairs:
 
         emission_dt = datetime.now() - timedelta(days=random.randint(10, 150))
         due_dt = emission_dt + timedelta(days=random.randint(20, 30))
