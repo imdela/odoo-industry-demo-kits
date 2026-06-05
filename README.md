@@ -1,46 +1,89 @@
 # Odoo Industry Demo Kits
 
-A scalable, dockerized environment for deploying Odoo 19.0 demo instances pre-populated with industry-specific data. Designed for rapid sales demonstrations, training, and testing across different business sectors.
+A scalable, dockerized environment for deploying **Odoo 19.0** demo instances pre-populated with industry-specific data. Designed for rapid development testing, end-to-end integration tests, and sales demonstrations.
 
-## 🚀 Quick Start
+## Quick Start
 
 ### 1. Prerequisites
 - Docker & Docker Compose
-- Make (optional, but recommended)
+- Make
+- Python 3 (for seed scripts, run locally)
 
-### 2. Environment Initialization
-Initialize your local environment settings from the provided template:
+### 2. Environment Setup
 ```bash
 make init
-# Then edit .env to customize your Odoo credentials
+# Edit .env to set your Odoo credentials
 ```
 
-### 3. Launching Odoo
-Use the Makefile for easy orchestration:
+### 3. Start Odoo
 ```bash
 make up
 ```
-The instance will be available at `http://localhost:8069`.
+Available at `http://localhost:8069`.
 
-### 4. Seeding Industry Data
-To populate the database with a specific industry kit (e.g., Portage/Developer Placement):
+### 4. Seed Industry Data
+
+Deploy a full industry package (accounting config + companies + resources):
 ```bash
-make seed industry=portage
+make seed industry=aion
 ```
-This command handles data sync and automated record creation, including realistic financial history and sequence numbering.
 
-## 📂 Project Structure
-- `seeds/`: Industry-specific data packages (JSON format).
-    - `portage/`: Agency, Client, and Developer data for placement businesses.
-- `addons/`: Custom Odoo modules.
-- `seed_loader.py`: Generic automation engine using XML-RPC and Environment variables.
-- `Makefile`: Unified command interface for deployment.
+Generate invoices for existing partners (run after `make seed`):
+```bash
+make seed-invoices industry=aion
+```
 
-## ⚖️ License
-This project is licensed under the **LGPL-3.0 License**. This ensures compatibility with the Odoo ecosystem while protecting the core logic.
+Full reset + seed + invoices in one command:
+```bash
+make seed-full industry=aion
+```
 
-## 🤝 Contribution
-To add a new industry:
-1. Create a subfolder in `seeds/`.
-2. Provide `agency.json`, `clients.json`, and `developers.json`.
-3. Run `make seed industry=your_new_industry`.
+### 5. Stop / Reset
+
+Stop containers:
+```bash
+make down
+```
+
+Wipe all data (volumes) and restart fresh:
+```bash
+make reset
+make up
+```
+
+## Available Commands
+
+| Command | Description |
+|---|---|
+| `make init` | Initialize `.env` from template |
+| `make up` | Start Odoo 19.0 and PostgreSQL containers |
+| `make down` | Stop containers |
+| `make ps` | List running services |
+| `make seed industry=xxx` | Deploy industry data package |
+| `make seed-invoices industry=xxx` | Generate invoices for existing partners |
+| `make seed-full industry=xxx` | Clean DB + seed companies + generate invoices |
+| `make reset` | Wipe all volumes and restart fresh |
+
+## Project Structure
+
+```
+odoo-demo/
+├── seeds/          # Industry data packages
+│   └── aion/       # Aion SaaS industry kit
+├── addons/         # Custom Odoo modules
+├── seed_loader.py  # Seed automation engine (XML-RPC)
+├── Makefile        # Command interface
+└── compose.yml     # Docker Compose (Odoo 19.0)
+```
+
+## Environment Variables
+
+| Variable | Description | Example |
+|---|---|---|
+| `ODOO_URL` | Odoo instance URL | `http://localhost:8069` |
+| `ODOO_USER` | Admin username | `admin` |
+| `ODOO_PASS` | Admin password | `admin` |
+
+## License
+
+LGPL-3.0 — compatible with the Odoo ecosystem.
