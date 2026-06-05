@@ -252,7 +252,31 @@ def run_industry_loader(path, clean=False, invoices_only=False):
 
     if invoices_only:
         accounting_defaults = setup_accounting(models, uid, PASS)
-        client_ids = models.execute_kw(DB, uid, PASS, 'res.partner', 'search', [[('is_company', '=', True), ('id', '>', 10)]])
+
+        # For aion industry: use odoo_partner_id from bridge company_mapping
+        # so invoices are generated only for companies actually synced with Aion
+        bridge_db_container = os.environ.get('BRIDGE_DB_CONTAINER', 'invoice-bridge-db-1')
+        bridge_pg_user = os.environ.get('BRIDGE_POSTGRES_USER', 'bridge')
+        bridge_pg_db = os.environ.get('BRIDGE_POSTGRES_DB', 'invoice_bridge')
+
+        result = subprocess.run(
+            ['docker', 'exec', bridge_db_container, 'psql', '-U', bridge_pg_user, '-d', bridge_pg_db,
+             '-t', '-c', 'SELECT odoo_partner_id FROM company_mapping;'],
+            capture_output=True, text=True
+        )
+
+        if result.returncode != 0 or not result.stdout.strip():
+            print(f"Error: could not read company_mapping from bridge database '{bridge_db_container}'.")
+            print("Ensure the bridge is running and companies are synced (task odoo-sync) before seeding invoices.")
+            return
+
+        client_ids = [int(pid.strip()) for pid in result.stdout.strip().split('\n') if pid.strip().isdigit()]
+        if not client_ids:
+            print("Error: company_mapping is empty. Run 'task odoo-sync' from Aion first.")
+            return
+
+        print(f"Using {len(client_ids)} partners from bridge company_mapping...")
+
         _generate_invoices(models, uid, PASS, client_ids, accounting_defaults)
         print(f"Industry package '{industry_name}' successfully deployed.")
         return
